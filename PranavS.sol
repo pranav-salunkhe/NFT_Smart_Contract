@@ -1,3 +1,4 @@
+// contracts/PranavS.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
@@ -9,6 +10,8 @@ import "@openzeppelin/contracts@4.8.1/utils/Counters.sol";
 contract PranavS is ERC721, ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
 
+    uint256 public mintRate = 0.01 ether;
+    uint MAX_SUPPLY = 69420;
     Counters.Counter private _tokenIdCounter;
 
     constructor() ERC721("PranavS", "PvS") {}
@@ -17,9 +20,11 @@ contract PranavS is ERC721, ERC721Enumerable, Ownable {
         return "https://pranavsalunkhe.vercel.app/tokens";
     }
 
-    function safeMint(address to) public onlyOwner {
+    function safeMint(address to) public payable {
+        require(totalSupply() < MAX_SUPPLY, "Can't mint more");
+        require(msg.value >= mintRate, "Insufficient ether");
+        _tokenIdCounter.increment(); 
         uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
         _safeMint(to, tokenId);
     }
 
@@ -40,4 +45,12 @@ contract PranavS is ERC721, ERC721Enumerable, Ownable {
     {
         return super.supportsInterface(interfaceId);
     }
+
+    function withdraw() public onlyOwner {
+        require(address(this).balance > 0, "The balance is 0");
+        payable(owner()).transfer(address(this).balance);
+    }
+
 }
+
+    
