@@ -6,7 +6,7 @@
 + Clone the repository
 + Run the following command:
   ```solcjs --bin --include-path node_modules/ --base-path . PranavS.sol```
-+ If you get an error ```command not found: solc```, install solc using:
++ If you get the error ```command not found: solc```, install solc using:
   ```npm i solc``` or ```yarn add solc```
 
 > Made as an assignment at ISTE, NITK
